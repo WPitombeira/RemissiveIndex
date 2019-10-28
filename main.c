@@ -61,7 +61,6 @@ bool search(PtrTree *tree, char *word, int page){
 
   if(strcmp((*tree)->obj.word, word) == 0){
     nOcurrence(&(*tree), page);
-    printf("Tentando Inserir: %s\n", word);
     return (true);
   }
 
@@ -86,8 +85,6 @@ void write(FILE *arqout, PtrTree *tree){
     }
     fprintf(arqout, "\n");
     write(arqout, &(*tree)->right);
-
-    printf("## File Write ##\n");
 }
 
 int main(int argc, char **argv){
@@ -122,17 +119,17 @@ int main(int argc, char **argv){
     }
 
     while(fgets(txt, 299, arqin) != NULL){
-      // fscanf(arqin, "%s", &txt);
-      tok = strtok(txt, " .()<:,>\n\n");
+      tok = strtok(txt, " .()<:,>\n");
       while(tok != NULL){
         if(strcmp(tok, "page") == 0){
           page++;
         }
         search(&tree, tok, page);
-        tok = strtok(NULL, " .()<:,>\n\n");
+        tok = strtok(NULL, " .()<:,>\n");
       }
     }
     write(arqout, &tree);
+    printf("## File Write ##\n");
 
     fclose(arqin);
     fclose(arqout);
